@@ -5,7 +5,7 @@ setup(
     name="sparkpickle",
     description="Provides functions for reading SequenceFile-s with Python "
                 "pickles.",
-    version="1.0.0",
+    version="1.0.1",
     license="Apache 2.0",
     author="Vadim Markovtsev",
     author_email="vadim@sourced.tech",
@@ -13,6 +13,7 @@ setup(
     download_url='https://github.com/src-d/sparkpickle',
     packages=["sparkpickle"],
     package_dir={"sparkpickle": "."},
+    exclude=["test.py"],
     keywords=["spark", "pyspark", "hadoop", "rdd", "pickle"],
     install_requires=[],
     package_data={"": ["LICENSE", "README.md"]},
