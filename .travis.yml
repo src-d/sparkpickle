@@ -2,16 +2,13 @@ language: cpp
 dist: trusty
 sudo: required
 
-before_install:
-  - . .travis.setup
-
 before_script:
   - pip3 install .
   - pip install .
 
 script:
   - python3 test.py
-  - python setup.py
+  - python test.py
 
 notifications:
   email: false
