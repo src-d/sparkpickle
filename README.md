@@ -26,7 +26,7 @@ python -m sparkpickle /path/to/file
 ```
 
 Code:
-```
+```python
 import sparkpickle
 
 for obj in sparkpickle.load_gen("/path/to/file"):
