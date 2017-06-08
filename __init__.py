@@ -1,6 +1,7 @@
 """
-Provides functions for reading SequenceFile-s with Python pickles. Such files
-are usually created with spark.rdd.RDD.saveAsPickleFile().
+Provides functions for reading `SequenceFile <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SequenceFileInputFormat.html>`_-s
+with Python pickles. Such files are usually created with
+:meth:`pyspark.rdd.RDD.saveAsPickleFile()`.
 No PySpark installation is required, no external dependencies.
 
 References:
@@ -12,11 +13,11 @@ References:
     http://www.javaworld.com/article/2072752/the-java-serialization-algorithm-revealed.html
 
 :authors: Vadim Markovtsev
-:license: Apache License 2.0
 :version: 1.0
 :status: Alpha
+:license: Apache License 2.0
 
-..
+.. code-block:: none
 
     Copyright 2016 source{d}
 
@@ -62,17 +63,21 @@ def load_gen(file, progress_callback=None):
     (generator version of load()).
     The file is expected to be created with saveAsPickleFile() in PySpark.
     All the imported Python classes must be present in the current environment.
-    :param file: File object which is open in binary mode ("rb") and
-                 must be able to read(), seek() and tell().
-    :param progress_callback: Optional callable to report the loading progress.
-                              It must accept a single argument which is the
-                              current file position.
-    :return: The generator object. Every object is yield-ed while reading.
 
-    Example:
-    >>> with open("/path/to/file", "rb") as f:
-    ...     for obj in sparkpickle.load_gen(f):
-    ...         print(obj)
+    :param file: `File object <https://docs.python.org/3/glossary.html#term-file-object>`_ \
+                 which is open in binary mode ("rb") and must be able to \
+                 read(), seek() and tell().
+    :param progress_callback: Optional :func:`callable` to report the loading \
+           progress. It must accept a single argument which is the current \
+           file position.
+    :return: The generator object. Every object is yield-ed while reading.
+    :raises FormatError: something is wrong with the supplied binary file.
+
+    Example::
+
+        with open("/path/to/file", "rb") as f:
+            for obj in sparkpickle.load_gen(f):
+                print(obj)
     """
     header = file.read(len(HEADER))
     if header != HEADER:
@@ -120,14 +125,17 @@ def load_gen(file, progress_callback=None):
 
 def load(file, progress_callback=None):
     """
-    Loads all the objects from the specified Spark SequenceFile with pickles.
-    The file is expected to be created with saveAsPickleFile() in PySpark.
+    Loads all the objects from the specified Spark `SequenceFile <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SequenceFileInputFormat.html>`_
+    with pickles. The file is expected to be created with
+    :meth:`pyspark.RDD.saveAsPickleFile()` in PySpark.
     All the imported Python classes must be present in the current environment.
-    :param file: File object which is open in binary mode ("rb") and
-                 must be able to read(), seek() and tell().
-    :param progress_callback: Optional callable to report the loading progress.
-                              It must accept a single argument which is the
-                              current file position.
+
+    :param file: `File object <https://docs.python.org/3/glossary.html#term-file-object>`_ \
+                 which is open in binary mode ("rb") and must be able to \
+                 read(), seek() and tell().
+    :param progress_callback: Optional :func:`callable` to report the loading\
+           progress. It must accept a single argument which is the current \
+           file position.
     :return: The list with the loaded objects. Internal batches are flattened.
     """
     return list(load_gen(file, progress_callback=progress_callback))
@@ -135,13 +143,16 @@ def load(file, progress_callback=None):
 
 def loads(buffer, progress_callback=None):
     """
-    Loads all the objects from the specified Spark SequenceFile with pickles.
-    The file is expected to be created with saveAsPickleFile() in PySpark.
+    Loads all the objects from the specified Spark `SequenceFile <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SequenceFileInputFormat.html>`_
+    with pickles. The file is expected to be created with
+    :meth:`pyspark.RDD.saveAsPickleFile()` in PySpark.
     All the imported Python classes must be present in the current environment.
-    :param buffer: The contents of the file (bytes).
-    :param progress_callback: Optional callable to report the loading progress.
-                              It must accept a single argument which is the
-                              current file position.
+
+    :param buffer: The contents of the file.
+    :type buffer: bytes
+    :param progress_callback: Optional :func:`callable` to report the loading \
+           progress. It must accept a single argument which is the current \
+           file position.
     :return: The list with the loaded objects. Internal batches are flattened.
     """
     return load(BytesIO(buffer), progress_callback=progress_callback)

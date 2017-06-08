@@ -1,3 +1,7 @@
+"""
+Simple CL application which prints the contents inside a Spark Pickle RDD.
+"""
+
 from __future__ import print_function
 import sys
 
